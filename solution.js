@@ -14,7 +14,20 @@ function listToObject( arr ) {
     return obj;
 }
 
-function objectToList() {}
+function objectToList( obj ) {
+    return Object.keys(obj).map((key) => {
+        let val;
+        if ( obj[key] && typeof obj[key] === "object" && !Array.isArray(obj[key]) ) {
+            val = Object.assign( {}, obj[key] );
+        } else {
+            val = obj[key];
+        }
+        return {
+            name: key,
+            value: val
+        }
+    });
+}
 
 function deserialize() {}
 
