@@ -27,6 +27,25 @@ function objectToList( obj ) {
     });
 }
 
-function deserialize() {}
+function deserialize( inObj ) {
+
+    let outObj = { row: [], total: inObj.total };
+
+    // TRUST: Reported number of records.
+    for ( let i = 0; i < inObj.total; i++ ) {
+        // Define input object property labels.
+        let keyLabel = `row${i}_name`,
+            valLabel = `row${i}_value`;
+
+        let hash = {
+            name: inObj[keyLabel],
+            value: inObj[valLabel]
+        };
+
+        outObj.row.push( hash );
+    }
+
+    return outObj;
+}
 
 export { add, listToObject, objectToList, deserialize }
