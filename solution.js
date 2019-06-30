@@ -1,4 +1,6 @@
-function add() {}
+function add( ...args ) {
+    return args.reduce( (acc, cur) => acc + cur, 0 );
+}
 
 function listToObject() {}
 
