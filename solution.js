@@ -27,6 +27,15 @@ function objectToList( obj ) {
     });
 }
 
+
+function tsToMonth( ts ) {
+        // Extract unix time.
+    let t = parseInt( ts.match( /\d+/g, 10 ) ),
+        // Convert to ISO format and extract yyyy-mm-dd.
+        d = new Date( t ).toISOString().match( /(\d{4})-(\d{2})-(\d{2})/ );
+    return `${d[3]}/${d[2]}/${d[1]}`;
+}
+
 function deserialize( inObj ) {
 
     let outObj = { row: [], total: inObj.total };
@@ -35,12 +44,25 @@ function deserialize( inObj ) {
     for ( let i = 0; i < inObj.total; i++ ) {
         // Define input object property labels.
         let keyLabel = `row${i}_name`,
-            valLabel = `row${i}_value`;
+            valLabel = `row${i}_value`,
+            hitsLabel = `row${i}_hits`;
 
         let hash = {
             name: inObj[keyLabel],
             value: inObj[valLabel]
         };
+
+        if ( inObj[hitsLabel] ) {
+            let hitArr = Object.values( inObj[hitsLabel] );
+            hitArr = hitArr.map((hit) => {
+                return  {
+                    time: tsToMonth( hit )
+                };
+            });
+            hash.hits = {
+                hit: hitArr
+            }
+        }
 
         outObj.row.push( hash );
     }
