@@ -1,2 +1,4 @@
 /node_modules
 /solution.mjs
+.idea
+.DS_Store
