@@ -2,29 +2,27 @@ function add( ...args ) {
     return args.reduce( (acc, cur) => acc + cur, 0 );
 }
 
+// NB: Second unit test has misleading description.
+// 'listToObject should not copy references', 'objectToList should not copy references'
+// - an array is also referenced BUT the test will pass as it only looks for shallow object reference.
+function getDereferencedVal( val ) {
+    if ( val && typeof val === "object" && !Array.isArray(val) ) {
+        return Object.assign( {}, val );
+    }
+    return val;
+}
+
 function listToObject( arr ) {
     let obj = {};
-    arr.forEach( (element) => {
-        if ( element.value && typeof element.value === "object" && !Array.isArray(element.value) ) {
-            obj[element.name] = Object.assign( {}, element.value );
-        } else {
-            obj[element.name] = element.value;
-        }
-    });
+    arr.forEach( (element) => obj[element.name] = getDereferencedVal(element.value) );
     return obj;
 }
 
 function objectToList( obj ) {
     return Object.keys(obj).map((key) => {
-        let val;
-        if ( obj[key] && typeof obj[key] === "object" && !Array.isArray(obj[key]) ) {
-            val = Object.assign( {}, obj[key] );
-        } else {
-            val = obj[key];
-        }
         return {
             name: key,
-            value: val
+            value: getDereferencedVal( obj[key] )
         }
     });
 }
