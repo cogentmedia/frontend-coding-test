@@ -2,7 +2,17 @@ function add( ...args ) {
     return args.reduce( (acc, cur) => acc + cur, 0 );
 }
 
-function listToObject() {}
+function listToObject( arr ) {
+    let obj = {};
+    arr.forEach( (element) => {
+        if ( element.value && typeof element.value === "object" && !Array.isArray(element.value) ) {
+            obj[element.name] = Object.assign( {}, element.value );
+        } else {
+            obj[element.name] = element.value;
+        }
+    });
+    return obj;
+}
 
 function objectToList() {}
 
